@@ -16,7 +16,8 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column
-    private String commentTitle,commentContent,commentDate,user;
+    private String commentTitle,commentContent,commentDate,user,status;
+    private Long postId;
 
     public Comment() {
         // Default constructor
