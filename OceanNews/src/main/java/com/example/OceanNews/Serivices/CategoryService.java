@@ -8,8 +8,8 @@ import java.util.List;
 @Service
 public interface CategoryService {
     Category addCategory(Category category);
-    void deleteCategoty(Long id);
+    String deleteCategoty(Long id);
     boolean checkCategoryNameExist(String name);
     Iterable<Category> allCategory();
-    Iterable<Category> categoryType(Category category);
+    String categoryNameById(Long ig);
 }
