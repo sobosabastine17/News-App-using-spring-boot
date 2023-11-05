@@ -15,13 +15,15 @@ public class CommentController {
 
     //save comment mapping request
     @PostMapping("/comment/save")
-    public Comment saveComment(@RequestBody Comment comment){
-        return commentService.saveComment(comment);
+    public String saveComment(@RequestBody Comment comment)
+    {
+        commentService.addComment(comment);
+        return "Could not save it comment";
     }
     //get all comment mapping request
     @GetMapping("/comment/allComment")
     public Iterable<Comment> getComment(){
-        return commentService.getAllComment();
+        return commentService.getComment();
     }
     //*************************************//
     //....end of comment Mapping Request...

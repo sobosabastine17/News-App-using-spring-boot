@@ -4,10 +4,9 @@ import com.example.OceanNews.Model.Category;
 import com.example.OceanNews.Repo.CategoryRepo;
 import com.example.OceanNews.Serivices.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CategoryImpService implements CategoryService {
@@ -21,13 +20,13 @@ public class CategoryImpService implements CategoryService {
 
     @Override
     public String deleteCategoty(Long id) {
-        boolean existCat=categoryRepo.existsById(id);
-        Category category=categoryRepo.findById(id).orElseThrow(
-                ()-> new IllegalStateException("ID not "+id+" not found")
-        );
-       // if (categoryRepo.existsById(id)){
+        try {
+//            Optional<Category> category=categoryRepo.findById(id);
+            boolean existCat=categoryRepo.existsById(id);
             categoryRepo.deleteById(id);
-       // }
+        }catch (IllegalStateException ex){
+            return "Category with id "+id+" does not exist";
+        }
         return "Category with id "+id+" does not exist";
     }
 

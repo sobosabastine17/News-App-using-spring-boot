@@ -10,9 +10,13 @@ public interface PostService {
     Post create(Post addPost);
 
     Iterable<Post> getAllPost();
-    Post postUpdate(Long id);
+
     void postDelete(Long ID);
-    List <Post> articleStatus(String postStatus);
+
+    List<Post> articleStatus(String postStatus);
 
     boolean updatePost(Long id, Post addPost);
+
+    Boolean checkIdExists(Long id);
+    Post findId(Long id);
 }

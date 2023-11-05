@@ -1,12 +1,14 @@
 package com.example.OceanNews.Serivices;
 
 import com.example.OceanNews.Model.Comment;
-import com.example.OceanNews.Repo.CommentRepo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface CommentService {
-    Comment saveComment(Comment comment);
-    Iterable<Comment> getAllComment();
+    Comment addComment(Comment comment);
+    Iterable<Comment> getComment();
+    List<Comment> commentStatus(String status);
+    String updateComment(Long id,String status);
 }

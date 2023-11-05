@@ -3,7 +3,9 @@ package com.example.OceanNews.Serivices.ImpService;
 import com.example.OceanNews.Model.Post;
 import com.example.OceanNews.Repo.PostRepo;
 import com.example.OceanNews.Serivices.PostService;
+import jakarta.el.ELException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,14 +23,12 @@ public class PostImpService implements PostService {
     public Iterable<Post> getAllPost() {
         return addPostRepo.findAll();
     }
-
     @Override
-    public Post postUpdate(Long id) {
-        return addPostRepo.findById(id).orElse(null);
-    }
-    @Override
-    public void postDelete(Long ID) {
-        addPostRepo.deleteById(ID);
+    public void postDelete(Long id) {
+        Boolean existPost=addPostRepo.existsById(id);
+        if (existPost){
+            addPostRepo.deleteById(id);
+        }
     }
 
     @Override
@@ -38,16 +38,24 @@ public class PostImpService implements PostService {
 
     @Override
     public boolean updatePost(Long id, Post postUpdate) {
-        Post existingPost= addPostRepo.findById(id).orElseThrow(
-                ()-> new IllegalStateException("ID not "+id+" not found")
-        );
-        //return ResponseEntity.notFound().build();
+        Post existingPost= addPostRepo.findByPostID(id);
         assert existingPost != null;
         existingPost.setPostTitle(postUpdate.getPostTitle());
         existingPost.setPostContent(postUpdate.getPostContent());
         existingPost.setCreator(postUpdate.getCreator());
-        addPostRepo.save(postUpdate);
+        addPostRepo.save(existingPost);
         return false;
+    }
+
+    @Override
+    public Boolean checkIdExists(Long id) {
+        Boolean existsId=addPostRepo.existsById(id);
+        return existsId;
+    }
+
+    @Override
+    public Post findId(Long id) {
+        return addPostRepo.findByPostID(id);
     }
 
 }

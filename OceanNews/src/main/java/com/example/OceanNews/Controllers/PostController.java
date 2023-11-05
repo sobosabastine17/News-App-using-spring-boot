@@ -28,34 +28,27 @@ public class PostController {
     public String testing(){
         return "Welcome to Ocean News";
     }
-    @PutMapping("/post/{id}")
+    @PutMapping("/post/update/{id}")
     public ResponseEntity<String> updatePost(@PathVariable Long id, @RequestBody Post postUpdate){
-        //addPostService.updatePost(id,postUpdate);
-        if (!addPostService.updatePost(id,postUpdate)){
+        Post checkId=addPostService.findId(id);
+        if (checkId!=null){
+            addPostService.updatePost(id,postUpdate);
             return ResponseEntity.ok("Post updated successfully");
         }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID fake not found");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post with ID:"+id+" can not be found");
     }
     // Delete a post by ID
     @DeleteMapping("/post/{id}")
     public ResponseEntity<String> deletePost(@PathVariable Long id) {
-        Post existingPost = addPostService.postUpdate(id);
-
-        if (existingPost == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID not found");
-        }
-
-        addPostService.postDelete(existingPost.getPostID());
-        //return ResponseEntity.noContent().build();
-        return ResponseEntity.ok("Post Deleted successfully");
-    }
+        Boolean checkId=addPostService.checkIdExists(id);
+       if (checkId.equals(true)){
+           addPostService.postDelete(id);
+           return ResponseEntity.ok("Post Deleted successfully");
+       }
+        return ResponseEntity.ok("Post ID "+id+" could not be found to perform the operation");
+    }//end of deletePost method
     @GetMapping("/article/{postStatus}")
-    // long status 1 representing published articles
-    public Iterable<Post> publishedArticles(@PathVariable String postStatus){
+    public Iterable<Post> postStatus(@PathVariable String postStatus){
         return addPostService.articleStatus(postStatus);
-    }
-
-    //*************************************//
-    //....end of add post Mapping Request...
-    //*************************************//
-}
+    }//end of postStatus method
+}//end of PostController class
