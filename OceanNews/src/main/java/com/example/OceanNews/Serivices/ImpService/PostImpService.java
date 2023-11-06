@@ -16,7 +16,7 @@ public class PostImpService implements PostService {
     PostRepo addPostRepo;
     @Override
     public Post create(Post addPost) {
-       return addPostRepo.save(addPost);
+        return  addPostRepo.save(addPost);
     }
 
     @Override
