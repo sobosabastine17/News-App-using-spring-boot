@@ -1,43 +1,77 @@
 package com.example.OceanNews.Controllers;
 
-import com.example.OceanNews.Constants;
+import com.example.OceanNews.DTO.JwtResponse;
+import com.example.OceanNews.DTO.LoginRequest;
 import com.example.OceanNews.Exception.ELException;
 import com.example.OceanNews.Model.User;
+import com.example.OceanNews.Procedure.JwtTokenUtil;
 import com.example.OceanNews.Serivices.UserService;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static javax.crypto.Cipher.SECRET_KEY;
 
 @RestController
 public class UserController {
     @Autowired
     private UserService userService;
 
-    @PostMapping("/user/login")
-    ResponseEntity<User>loginUser(@RequestBody User user){
-        User existingUser = userService.findUserByUsername(user.getUsername());
-        User existingPass = userService.findUserByPassword(user.getPassword());
-        if (existingUser == null) {
-            throw new ELException("User does not exist");
-        }
-        if (!user.getPassword().equals(existingPass.getPassword())) {
-            throw new ELException("Password is incorrect");
-        }
-        User tokenMap= generateJWTToken(existingUser);
-        return ResponseEntity.ok(tokenMap);
+    private static final Map<String, String> userStore = new HashMap<>();
+    private static final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+    // Add some test users to the user store (for demonstration purposes)
+    static {
+        userStore.put("user1", passwordEncoder.encode("password1"));
+        userStore.put("user2", passwordEncoder.encode("password2"));
     }
+
+//    @PostMapping("/user/login")
+//    ResponseEntity<User>loginUser(@RequestBody User user){
+//        User existingUser = userService.findUserByUsername(user.getUsername());
+//        User existingPass = userService.findUserByPassword(user.getPassword());
+//
+//
+//       // User existingPass = userService.findUserByPassword(user.getPassword());
+//        if (existingUser == null) {
+//            throw new ELException("User does not exist");
+//        }
+//        if (!user.getPassword().equals(existingPass.getPassword())) {
+//            throw new ELException("Password is incorrect");
+//        }
+//        User tokenMap= generateJWTToken(existingUser);
+//        return ResponseEntity.ok(tokenMap);
+//    }
+
+    @PostMapping("/user/login")
+    public ResponseEntity<?> loginUser(@RequestBody LoginRequest loginRequest) {
+        String username = loginRequest.getUsername();
+        String providedPassword = loginRequest.getPassword();
+
+        if (userStore.containsKey(username)) {
+            String storedPassword = userStore.get(username);
+
+            if (passwordEncoder.matches(providedPassword, storedPassword)) {
+                // Authentication successful
+                // Generate a JWT token for the user
+                String jwtToken = JwtTokenUtil.generateToken(username);
+
+                // Return the token as part of the response
+                return ResponseEntity.ok(new JwtResponse(jwtToken));
+            }
+        }
+
+        // Authentication failed
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Authentication failed");
+    }
+
     @PostMapping("/user/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
+    public ResponseEntity<String> registerUser(@RequestBody User user) {
         User existingUser = userService.findUserByUsername(user.getUsername());
         if (existingUser != null) {
             throw new ELException("Username already exists");
@@ -47,9 +81,8 @@ public class UserController {
             throw new ELException("Email already exists");
         }
         User newUser = userService.saveUser(user);
-        return ResponseEntity.ok(generateJWTToken(newUser));
+        return ResponseEntity.ok(JwtTokenUtil.generateToken(String.valueOf(newUser)));
     }
-
     @PostMapping("/user/create")
     public User createUser(@RequestBody User user) {
         return userService.saveUser(user);
@@ -101,26 +134,5 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("email not found");
         }
-    }
-
-
-    //*************************************//
-    //....end of user Mapping Request...
-    //*************************************//
-
-    private User generateJWTToken(User user) {
-        long timestamp = System.currentTimeMillis();
-        String token = Jwts.builder()
-                .signWith(SignatureAlgorithm.HS256, Constants.API_SECRET_KEY)
-                .setIssuedAt(new Date(timestamp))
-                .setExpiration(new Date(timestamp + Constants.Token_Validity))
-                .claim("id", user.getUserID())
-                .claim("username", user.getUsername())
-                .claim("email", user.getEmail())
-                .claim("role", user.getRole())
-                .compact();
-        User tokenMap = new User();
-        tokenMap.put("token", token);
-        return tokenMap;
     }
 }
