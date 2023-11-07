@@ -22,4 +22,6 @@ public interface UserService {
     ResponseEntity<String> updateUser(Long id, String username, String email);
 
     User findUserByUsername(String username);
+
+    User findUserByPassword(String password);
 }

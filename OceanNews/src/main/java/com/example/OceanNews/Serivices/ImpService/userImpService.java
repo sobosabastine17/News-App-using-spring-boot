@@ -109,4 +109,9 @@ public class userImpService implements UserService {
     public User findUserByUsername(String username) {
         return userRepo.findAllByUsername(username);
     }
+
+    @Override
+    public User findUserByPassword(String password) {
+        return userRepo.findByPassword(password);
+    }
 }

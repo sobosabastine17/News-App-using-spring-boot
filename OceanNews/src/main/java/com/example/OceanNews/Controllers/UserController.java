@@ -26,10 +26,11 @@ public class UserController {
     @PostMapping("/user/login")
     ResponseEntity<User>loginUser(@RequestBody User user){
         User existingUser = userService.findUserByUsername(user.getUsername());
+        User existingPass = userService.findUserByPassword(user.getPassword());
         if (existingUser == null) {
             throw new ELException("User does not exist");
         }
-        if (!user.getPassword().equals(existingUser.getPassword())) {
+        if (!user.getPassword().equals(existingPass.getPassword())) {
             throw new ELException("Password is incorrect");
         }
         User tokenMap= generateJWTToken(existingUser);

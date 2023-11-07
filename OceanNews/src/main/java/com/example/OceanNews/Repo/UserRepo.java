@@ -21,4 +21,7 @@ List <User> findByRole(String role);
     User findByEmail(String email);
 
     User findAllByUsername(String username);
+
+    @Query("select u from User u where u.password = ?1")
+    User findByPassword(String password);
 }
