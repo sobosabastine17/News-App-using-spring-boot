@@ -32,4 +32,7 @@ public class User {
     public User() {
         // Default constructor
     }
+
+    public void put(String token, String token1) {
+    }
 }

@@ -104,4 +104,9 @@ public class userImpService implements UserService {
         }
         return ResponseEntity.ok("User updated Successful");
     }
+
+    @Override
+    public User findUserByUsername(String username) {
+        return userRepo.findAllByUsername(username);
+    }
 }

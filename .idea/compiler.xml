@@ -11,10 +11,20 @@
         </processorPath>
         <module name="OceanNews.OceanNews.main" />
       </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/3.2.0-SNAPSHOT/28c1e3c9e6449256581ef96dfb6975d3d06bb25a/spring-boot-configuration-processor-3.2.0-SNAPSHOT.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="OceanNews.OceanNews.main~3" />
+      </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="OceanNews.OceanNews.main" target="17" />
       <module name="OceanNews.OceanNews.main~1" target="21" />
       <module name="OceanNews.OceanNews.main~2" target="17" />
+      <module name="OceanNews.OceanNews.test" target="17" />
       <module name="OceanNews.OceanNews.test~1" target="21" />
       <module name="OceanNews.OceanNews.test~2" target="17" />
     </bytecodeTargetLevel>

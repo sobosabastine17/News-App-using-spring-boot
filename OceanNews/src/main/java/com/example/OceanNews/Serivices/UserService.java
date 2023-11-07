@@ -20,4 +20,6 @@ public interface UserService {
     Boolean existsByUsername(String user);
     Boolean existedByPassword(String pass);
     ResponseEntity<String> updateUser(Long id, String username, String email);
+
+    User findUserByUsername(String username);
 }
