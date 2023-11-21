@@ -26,7 +26,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'org.springframework.boot:spring-boot-starter-security'
+	//implementation 'org.springframework.boot:spring-boot-starter-security'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
@@ -43,17 +43,17 @@ dependencies {
 	implementation 'org.springdoc:springdoc-openapi:2.0.2'
 
 	//JSON web token
-	implementation 'io.jsonwebtoken:jjwt:0.12.3' // You can check for the latest version on Maven Central
-	implementation 'javax.xml.bind:jaxb-api:2.3.1'
-	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
-	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	//implementation 'io.jsonwebtoken:jjwt:0.12.3' // You can check for the latest version on Maven Central
+	//implementation 'javax.xml.bind:jaxb-api:2.3.1'
+	//implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	//runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
 
 	// Spring Security Core
-	implementation 'org.springframework.security:spring-security-core:5.5.8'
+	//implementation 'org.springframework.security:spring-security-core:5.5.8'
 	// Spring Security Web (Includes WebAuthenticationDetailsSource)
-	implementation 'org.springframework.security:spring-security-web:5.7.7'
+	//implementation 'org.springframework.security:spring-security-web:5.7.7'
 	// Jakarta EE 9 Servlet API
-	implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+	//implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
 }
 
 tasks.named('test') {

@@ -14,7 +14,7 @@
       <profile name="Gradle Imported" enabled="true">
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="false">
-          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/3.2.0-SNAPSHOT/1a80d428cc91aef6c040a2372fdface4e4696bbf/spring-boot-configuration-processor-3.2.0-SNAPSHOT.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/3.2.0-SNAPSHOT/af587f421928489d3f7e66460d192b7cde4173fa/spring-boot-configuration-processor-3.2.0-SNAPSHOT.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
         </processorPath>
         <module name="OceanNews.OceanNews.main~2" />

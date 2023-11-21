@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Entity
@@ -11,8 +13,11 @@ import lombok.Setter;
 public class Announcement {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id", nullable = false)
     private Long id;
-
+    private String title;
+    private String content;
+    private String image;
+    private LocalDate date;
+    private String author;
 
 }

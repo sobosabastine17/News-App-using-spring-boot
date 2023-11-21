@@ -1,5 +1,7 @@
 package com.example.OceanNews.Controllers;
 
+import com.example.OceanNews.DTO.Category.CreateCategoryDTO;
+import com.example.OceanNews.DTO.Category.UpdateCategoryDTO;
 import com.example.OceanNews.Model.Category;
 import com.example.OceanNews.Serivices.ImpService.CategoryImpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ public class CategoryController {
     @Autowired
     private CategoryImpService categoryImpService;
     @PostMapping("category/add")
-    ResponseEntity<String> postCategory(@RequestBody Category category){
+    ResponseEntity<String> postCategory(@RequestBody CreateCategoryDTO category){
         if (categoryImpService.checkCategoryNameExist(category.getCategoryName())){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category name exist");
         }
@@ -41,12 +43,12 @@ public class CategoryController {
             return ResponseEntity.notFound().build();
         }
     }
-    @PutMapping("/category/update")
-    ResponseEntity<String> updateCategory(@RequestBody Category category){
-        if (categoryImpService.checkCategoryNameExist(category.getCategoryName())){
+    @PutMapping("/category/update/{id}")
+    ResponseEntity<String> updateCategory(@PathVariable Long id,@RequestBody UpdateCategoryDTO updateCategory){
+        if (categoryImpService.checkCategoryNameExist(updateCategory.getCategoryName())){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category name exist");
         }
-        if(categoryImpService.addCategory(category)!=null){
+        if(categoryImpService.updateCategory(updateCategory)!=null){
             return   ResponseEntity.ok("Category updated");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category could not be sent");
