@@ -1,0 +1,108 @@
+Entities
+1. Post
+Represents a news article or story.
+
+Attributes:
+
+id: Unique identifier for the post.
+title: Title of the post.
+content: Content or body of the post.
+author: Author of the post.
+category: Category the post belongs to.
+subcategory: Subcategory the post belongs to.
+createdAt: Timestamp for post creation.
+updatedAt: Timestamp for last update.
+
+2. Comment
+Represents comments made on news posts.
+
+Attributes:
+
+id: Unique identifier for the comment.
+content: Content of the comment.
+user: User who posted the comment.
+post: Post the comment is associated with.
+createdAt: Timestamp for comment creation.
+
+3. Category
+Represents categories for organizing posts.
+
+Attributes:
+
+id: Unique identifier for the category.
+name: Name of the category.
+
+4. Subcategory
+Represents subcategories within categories.
+
+Attributes:
+
+id: Unique identifier for the subcategory.
+name: Name of the subcategory.
+category: Parent category of the subcategory.
+
+5. User
+Represents users of the system.
+
+Attributes:
+
+id: Unique identifier for the user.
+username: User's username.
+email: User's email address.
+password: User's password (hashed/salted).
+createdAt: Timestamp for user registration.
+6. Announcement
+Represents announcements or news updates.
+
+Attributes:
+
+id: Unique identifier for the announcement.
+title: Title of the announcement.
+content: Content of the announcement.
+createdAt: Timestamp for announcement creation.
+
+API Endpoints
+Posts
+GET /posts: Get all posts.
+GET /posts/{id}: Get a specific post by ID.
+POST /posts: Create a new post.
+PUT /posts/{id}: Update an existing post.
+DELETE /posts/{id}: Delete a post.
+
+Comments
+GET /posts/{postId}/comments: Get all comments for a specific post.
+POST /posts/{postId}/comments: Add a comment to a post.
+DELETE /comments/{id}: Delete a comment.
+
+Categories
+GET /categories: Get all categories.
+GET /categories/{id}: Get a specific category by ID.
+POST /categories: Create a new category.
+PUT /categories/{id}: Update an existing category.
+DELETE /categories/{id}: Delete a category.
+
+Subcategories
+GET /categories/{categoryId}/subcategories: Get all subcategories for a specific category.
+GET /subcategories/{id}: Get a specific subcategory by ID.
+POST /categories/{categoryId}/subcategories: Create a new subcategory.
+PUT /subcategories/{id}: Update an existing subcategory.
+DELETE /subcategories/{id}: Delete a subcategory.
+
+Users
+GET /users: Get all users.
+GET /users/{id}: Get a specific user by ID.
+POST /users: Register a new user.
+PUT /users/{id}: Update an existing user.
+DELETE /users/{id}: Delete a user.
+
+Announcements
+GET /announcements: Get all announcements.
+GET /announcements/{id}: Get a specific announcement by ID.
+POST /announcements: Create a new announcement.
+PUT /announcements/{id}: Update an existing announcement.
+DELETE /announcements/{id}: Delete an announcement.
+Authentication and Authorization
+Explain any authentication/authorization mechanisms used to secure the API endpoints.
+
+Usage Examples
+Provide examples of API requests and responses for each endpoint.
