@@ -61,8 +61,14 @@ title: Title of the announcement.
 content: Content of the announcement.
 createdAt: Timestamp for announcement creation.
 
-API Endpoints
-Posts
+//////////////////////////
+***** API Endpoints ******
+//////////////////////////
+
+BASE URL: localhost:8080/api/newsApp/v1
+
+##### Posts #####
+
 GET /posts: Get all posts.
 GET /posts/{id}: Get a specific post by ID.
 POST /posts: Create a new post.
@@ -96,11 +102,16 @@ PUT /users/{id}: Update an existing user.
 DELETE /users/{id}: Delete a user.
 
 Announcements
-GET /announcements: Get all announcements.
-GET /announcements/{id}: Get a specific announcement by ID.
-POST /announcements: Create a new announcement.
-PUT /announcements/{id}: Update an existing announcement.
-DELETE /announcements/{id}: Delete an announcement.
+GET /announcement/getAll: Get all announcements.
+GET //announcement/getById/{id}: Get a specific announcement by ID.
+GET /announcement/getAllByStatus/{status}: Get announcement By Status(Active=1,deleted=0).
+POST /announcement/add: Create a new announcement(1).
+PATCH /announcement/update/{id}: Update an existing announcement.
+PATCH /announcement/restore/{id}: Restore an announcement by changing the status(1).
+DELETE(SOFT) /announcement/delete/soft/{id}: Delete an announcement by changing the status(0).
+DELETE(HARD) /announcement/delete/hard/{id}: Delete an announcement permanently from the database.
+
+
 Authentication and Authorization
 Explain any authentication/authorization mechanisms used to secure the API endpoints.
 

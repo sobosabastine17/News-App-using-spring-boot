@@ -17,7 +17,9 @@ public class Announcement {
     private String title;
     private String content;
     private String image;
-    private LocalDate date;
-    private String author;
+    private LocalDate date=LocalDate.now();
+    private String createdBy;
+    private String recipient;
+    private Long status=1L;
 
 }
