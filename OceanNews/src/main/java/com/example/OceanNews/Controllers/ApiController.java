@@ -15,12 +15,8 @@ public class ApiController {
         return details;
     }
 //Testing the api
-    @GetMapping("/testing")
+    @GetMapping("app/testing")
     public String testingApp(){
         return "Welcome to me";
-    }
-    @GetMapping(value = "/post/test")
-    public String getPostById(){
-        return "Welcome to Ocean News";
     }
 }

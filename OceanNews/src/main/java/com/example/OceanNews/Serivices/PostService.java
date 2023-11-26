@@ -8,16 +8,20 @@ import java.util.List;
 
 @Service
 public interface PostService {
-    Post create(Post addPost) throws ELException;
+    Post add(Post addPost) throws ELException;
 
-    Iterable<Post> getAllPost();
+    Iterable<Post> getAll();
 
-    void postDelete(Long ID) throws ELException;
+    String softDelete(Long ID) throws ELException;
+    String hardDelete(Long ID) throws ELException;
 
-    List<Post> articleStatus(String postStatus) throws ELException;
+    List<Post> status(Long postStatus) throws ELException;
 
-    boolean updatePost(Long id, Post addPost) throws ELException;
+    boolean update(Long id, Post addPost) throws ELException;
+    boolean edit(Long id, Post addPost) throws ELException;
 
     Boolean checkIdExists(Long id) throws ELException;
     Post findId(Long id) throws ELException;
+    String restore(Long id) throws ELException;
+    Post getById(Long id) throws ELException;
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @Service
 public class CommentImpService implements CommentService {
     @Autowired
-    private CommentRepo commentRepo;
+    CommentRepo commentRepo;
 
     @Override
     public Comment addComment(Comment comment) {
@@ -25,15 +25,16 @@ public class CommentImpService implements CommentService {
 
     @Override
     public List<Comment> commentStatus(String status) {
-       return commentRepo.findAllByStatus(status);
+       //return commentRepo.findAllByStatus(status);
+        return null;
     }
 
     @Override
-    public String updateComment(Long id,String status) {
-        Boolean existsComment=commentRepo.existsById(id);
+    public String updateComment(Long id) {
+        boolean existsComment=commentRepo.existsById(id);
         if (existsComment){
             Comment existComment=commentRepo.findById(id).orElseThrow();
-            existComment.setStatus(status);
+            existComment.setStatus(id);
         }
         return "Id "+id+" not found";
     }

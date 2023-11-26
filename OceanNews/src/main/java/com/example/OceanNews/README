@@ -70,10 +70,12 @@ BASE URL: localhost:8080/api/newsApp/v1
 ##### Posts #####
 
 GET /posts: Get all posts.
-GET /posts/{id}: Get a specific post by ID.
+GET /posts/{id}: Get a specific post by ID(pending=0,review=1,approved=2,rejected=3,delete=4).
 POST /posts: Create a new post.
-PUT /posts/{id}: Update an existing post.
-DELETE /posts/{id}: Delete a post.
+PATCH /posts/{id}: Update an existing post.
+PATCH /posts/restore/{id}: Restore a post by changing the status(1).
+SOFT DELETE /posts/{id}: Delete a post by changing the ID to 4.
+HARD DELETE /posts/delete/{id}: Delete a post permanently from the database.
 
 Comments
 GET /posts/{postId}/comments: Get all comments for a specific post.

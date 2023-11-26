@@ -10,5 +10,5 @@ public interface CommentService {
     Comment addComment(Comment comment);
     Iterable<Comment> getComment();
     List<Comment> commentStatus(String status);
-    String updateComment(Long id,String status);
+    String updateComment(Long id);
 }

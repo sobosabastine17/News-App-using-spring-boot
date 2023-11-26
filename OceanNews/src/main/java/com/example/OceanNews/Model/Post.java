@@ -1,6 +1,5 @@
 package com.example.OceanNews.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,28 +18,28 @@ import java.time.LocalDate;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonIgnore
-    private Long postID;
+   // @JsonIgnore
+    private Long id;
     @Column
-    private String postTitle;
+    private String title;
     @Column
     private Long categoryID;
     @Column
     private Long subCategoryID;
     @Column
-    private String postContent;
+    private String content;
     @Column
-    private LocalDate postDate;
+    private LocalDate date=LocalDate.now();
     @Column
-    private Long postClick;
+    private Long click=0L;
     @Column
-    private Long postShared;
+    private Long shared=0L;
     @Column
     private String creator;
     @Column
-    private String postURL;
+    private String url;
     @Column
-    private String postStatus;
+    private Long status=0L;
 
     public Post() {
         // Default constructor
