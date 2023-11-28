@@ -43,7 +43,7 @@ public class PostController {
     }
     // Delete a post by changing the status to 0
     @DeleteMapping("/post/delete/soft/{id}")
-    public ResponseEntity softDelete(@PathVariable Long id) {
+    public ResponseEntity<String> softDelete(@PathVariable Long id) {
        if (addPostService.checkIdExists(id)){
            addPostService.softDelete(id);
            return ResponseEntity.ok("Post Deleted successfully");
@@ -52,7 +52,7 @@ public class PostController {
     }
     // Delete a post by changing the status to 0
     @DeleteMapping("/post/delete/hard/{id}")
-    public ResponseEntity hardDelete(@PathVariable Long id) {
+    public ResponseEntity<String> hardDelete(@PathVariable Long id) {
         if (addPostService.checkIdExists(id)){
             addPostService.hardDelete(id);
             return ResponseEntity.ok("Post Deleted successfully");

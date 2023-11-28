@@ -12,4 +12,6 @@ public interface PostRepo extends JpaRepository<Post,Long> {
 
     @Query("select p from Post p where p.status = ?1")
     List<Post> findAllByStatus(Long status);
+    @Query("select count(p) from Post p where p.status = ?1")
+    Long countByStatus(Long status);
 }

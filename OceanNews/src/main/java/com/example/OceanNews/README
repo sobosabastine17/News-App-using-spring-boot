@@ -66,15 +66,23 @@ createdAt: Timestamp for announcement creation.
 //////////////////////////
 
 BASE URL: localhost:8080/api/newsApp/v1
+Default values
+- Suspended=0
+- Active=1
+- Pending=2
+- Review=3
+- Approved=4
+- Rejected=5
+- Delete=6
 
 ##### Posts #####
 
 GET /posts: Get all posts.
-GET /posts/{id}: Get a specific post by ID(pending=0,review=1,approved=2,rejected=3,delete=4).
+GET /posts/{id}: Get a specific post by ID(pending=2,review=3,approved=4,rejected=5,delete=6).
 POST /posts: Create a new post.
 PATCH /posts/{id}: Update an existing post.
 PATCH /posts/restore/{id}: Restore a post by changing the status(1).
-SOFT DELETE /posts/{id}: Delete a post by changing the ID to 4.
+SOFT DELETE /posts/{id}: Delete a post by changing the ID to 6.
 HARD DELETE /posts/delete/{id}: Delete a post permanently from the database.
 
 Comments

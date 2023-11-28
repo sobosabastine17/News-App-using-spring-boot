@@ -18,7 +18,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column
-    private String commentTitle,commentContent,user;
+    private String title,content,user;
     private LocalDate date=LocalDate.now();
     private Long status=0L;
     private Long postId;

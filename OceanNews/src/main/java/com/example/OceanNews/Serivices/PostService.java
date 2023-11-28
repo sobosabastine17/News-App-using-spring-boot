@@ -12,13 +12,13 @@ public interface PostService {
 
     Iterable<Post> getAll();
 
-    String softDelete(Long ID) throws ELException;
-    String hardDelete(Long ID) throws ELException;
+    void softDelete(Long ID) throws ELException;
+    void hardDelete(Long ID) throws ELException;
 
     List<Post> status(Long postStatus) throws ELException;
 
     boolean update(Long id, Post addPost) throws ELException;
-    boolean edit(Long id, Post addPost) throws ELException;
+    void edit(Long id, Post addPost) throws ELException;
 
     Boolean checkIdExists(Long id) throws ELException;
     Post findId(Long id) throws ELException;

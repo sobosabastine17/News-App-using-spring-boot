@@ -20,6 +20,6 @@ public class Announcement {
     private LocalDate date=LocalDate.now();
     private String createdBy;
     private String recipient;
-    private Long status=1L;
+    private Long status=0L;
 
 }

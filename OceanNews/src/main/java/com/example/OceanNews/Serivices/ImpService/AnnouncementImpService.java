@@ -32,7 +32,7 @@ public class AnnouncementImpService implements AnnouncementService {
             return "Announcement with id: "+id+" does not exist";
         }
         Announcement announcement = repo.findById(id).get();
-        announcement.setStatus(0L);
+        announcement.setStatus(6L);
         repo.save(announcement);
         return "Announcement with id "+id+" has been deleted";
     }

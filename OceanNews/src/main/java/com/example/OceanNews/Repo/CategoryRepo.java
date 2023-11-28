@@ -17,6 +17,7 @@ public interface CategoryRepo extends JpaRepository<Category,Long> {
     List<Category> findByCategoryName(Long categoryName);
     @Query("select (count(c) > 0) from Category c where c.categoryName = ?1")
     boolean existsByCategoryName(String categoryName);
+
     @Override
     boolean existsById(Long aLong);
 }

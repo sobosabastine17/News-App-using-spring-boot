@@ -7,7 +7,6 @@ import com.example.OceanNews.Serivices.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -24,30 +23,34 @@ public class PostImpService implements PostService {
         return addPostRepo.findAll();
     }
     @Override
-    public String softDelete(Long id) {
+    public void softDelete(Long id) {
         Post post=addPostRepo.findByPostID(id);
        assert post != null;
-            post.setStatus(4L);
+            post.setStatus(6L);
             addPostRepo.save(post);
-        return "Deleted successfully";
     }
 
 
     @Override
-    public String hardDelete(Long ID) throws ELException {
+    public void hardDelete(Long ID) throws ELException {
         Post post=addPostRepo.findByPostID(ID);
         assert post != null;
         addPostRepo.delete(post);
-        return "Deleted successfully";
     }
 
     @Override
     public List<Post> status(Long postStatus) {
-        if (postStatus >= 0 && postStatus <= 3) {
+        if (postStatus >= 0 && postStatus <= 6) {
             return addPostRepo.findAllByStatus(postStatus);
+        } else if (!addPostRepo.existsById(postStatus)) {
+            // Handle empty list
+            throw new ELException("ID: " + postStatus + " does not exist");
+        } //check if the collection is empty
+        else if (addPostRepo.countByStatus(postStatus) == 0) {
+            throw new ELException("Empty list");
         } else {
             // Handle invalid status or return an empty list
-            return Collections.emptyList();
+            throw new ELException("Invalid status");
         }
     }
 
@@ -64,14 +67,13 @@ public class PostImpService implements PostService {
         return false;
     }
     @Override
-    public boolean edit(Long id, Post postUpdate) {
+    public void edit(Long id, Post postUpdate) {
         Post existingPost= addPostRepo.findByPostID(id);
         assert existingPost != null;
         existingPost.setTitle(postUpdate.getTitle());
         existingPost.setContent(postUpdate.getContent());
         existingPost.setCreator(postUpdate.getCreator());
         addPostRepo.save(existingPost);
-        return false;
     }
 
     @Override
@@ -88,7 +90,7 @@ public class PostImpService implements PostService {
     public String restore(Long id) throws ELException {
         Post post=addPostRepo.findByPostID(id);
         assert post != null;
-        post.setStatus(1L);
+        post.setStatus(3L);
         addPostRepo.save(post);
         return null;
     }

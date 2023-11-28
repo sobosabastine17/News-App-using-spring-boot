@@ -1,5 +1,6 @@
 package com.example.OceanNews.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +19,7 @@ import java.time.LocalDate;
 public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-   // @JsonIgnore
+    @JsonIgnore
     private Long id;
     @Column
     private String title;
