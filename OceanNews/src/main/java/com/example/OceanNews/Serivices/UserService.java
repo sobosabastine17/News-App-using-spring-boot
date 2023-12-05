@@ -26,4 +26,6 @@ public interface UserService {
    void changeStatus(Long id,Long status)throws ELException;
    void changeRole(Long id,Role role)throws ELException;
    List<User> findByRoles(Role roles) throws ELException;
+
+    void updateUser(Long id, String username, String email);
 }
