@@ -26,7 +26,7 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
-	//implementation 'org.springframework.boot:spring-boot-starter-security'
+    //implementation 'org.springframework.boot:spring-boot-starter-security'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
@@ -54,6 +54,9 @@ dependencies {
 	//implementation 'org.springframework.security:spring-security-web:5.7.7'
 	// Jakarta EE 9 Servlet API
 	//implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+
+	implementation 'org.mindrot:jbcrypt:0.4'
+
 }
 
 tasks.named('test') {

@@ -4,7 +4,6 @@ import com.example.OceanNews.Model.Announcement;
 import com.example.OceanNews.Repo.AnnouncementRepo;
 import com.example.OceanNews.Serivices.AnnouncementService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -84,11 +83,15 @@ public class AnnouncementImpService implements AnnouncementService {
     }
 
     @Override
-    public ResponseEntity<String> findAnnouncementById(Long id) {
-        if (!repo.existsById(id)){
-             return ResponseEntity.badRequest().body("Announcement with id "+id+" does not exist");
+    public Announcement edit(Long id, Announcement announcement) throws Exception {
+Announcement existing = repo.findById(id).orElse(null);
+        if (existing == null){
+            throw new Exception("Announcement with id "+id+" does not exist");
         }
-        // return ResponseEntity.ok("Announcement with id "+id+" exists");
-        return ResponseEntity.badRequest().body("Announcement with id "+id+" does not exist");
+        existing.setTitle(announcement.getTitle());
+        existing.setContent(announcement.getContent());
+        existing.setImage(announcement.getImage());
+        existing.setRecipient(announcement.getRecipient());
+        return repo.save(existing);
     }
 }

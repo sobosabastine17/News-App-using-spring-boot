@@ -41,16 +41,17 @@ public class PostImpService implements PostService {
     @Override
     public List<Post> status(Long postStatus) {
         if (postStatus >= 0 && postStatus <= 6) {
-            return addPostRepo.findAllByStatus(postStatus);
-        } else if (!addPostRepo.existsById(postStatus)) {
             // Handle empty list
-            throw new ELException("ID: " + postStatus + " does not exist");
-        } //check if the collection is empty
-        else if (addPostRepo.countByStatus(postStatus) == 0) {
-            throw new ELException("Empty list");
+            if (addPostRepo.countByStatus(postStatus) == 0) {
+                throw new ELException("Status ID: " + postStatus + " is empty");
+            }
+            return addPostRepo.findAllByStatus(postStatus);
+        } else if (addPostRepo.findByPostID(postStatus) == null) {
+            // Handle empty list
+            throw new ELException("Status ID: " + postStatus + " does not exist");
         } else {
             // Handle invalid status or return an empty list
-            throw new ELException("Invalid status");
+            throw new ELException("Invalid status ID");
         }
     }
 

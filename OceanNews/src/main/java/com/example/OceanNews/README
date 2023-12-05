@@ -86,9 +86,20 @@ SOFT DELETE /posts/{id}: Delete a post by changing the ID to 6.
 HARD DELETE /posts/delete/{id}: Delete a post permanently from the database.
 
 Comments
-GET /posts/{postId}/comments: Get all comments for a specific post.
-POST /posts/{postId}/comments: Add a comment to a post.
-DELETE /comments/{id}: Delete a comment.
+POST /comment/save: Create a new comment.
+GET /comment/allComment: Get all comments.
+GET /comment/post/{id}: Get a specific comment by Post ID.
+DELETE /comments/{id}: Delete a comment by updating the status to 6.
+UPDATE /comment/update/{id}: Update a comment.
+STATUS /comment/status/{id}: Change the status of a comment to 1 or 0.
+
+Users
+Roles=(USER,ADMIN,CREATOR,EDITOR,SUB_ADMIN)
+GET /users: Get all users.
+GET /users/{id}: Get a specific user by ID.
+POST /users: Register a new user.
+PUT /users/{id}: Update an existing user.
+DELETE /users/{id}: Delete a user.
 
 Categories
 GET /categories: Get all categories.
@@ -104,12 +115,6 @@ POST /categories/{categoryId}/subcategories: Create a new subcategory.
 PUT /subcategories/{id}: Update an existing subcategory.
 DELETE /subcategories/{id}: Delete a subcategory.
 
-Users
-GET /users: Get all users.
-GET /users/{id}: Get a specific user by ID.
-POST /users: Register a new user.
-PUT /users/{id}: Update an existing user.
-DELETE /users/{id}: Delete a user.
 
 Announcements
 GET /announcement/getAll: Get all announcements.

@@ -1,5 +1,9 @@
 package com.example.OceanNews.Procedure;
 
+
+import org.springframework.security.crypto.bcrypt.BCrypt;
+
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Utilities {
@@ -10,10 +14,30 @@ public class Utilities {
         return pattern.matcher(email).matches();
     }
     public static boolean isValidPhoneNumber(String phoneNumber) {
-        // Define a regex pattern for a valid phone number format
-        // Example pattern: ^\d{10}$ for 10-digit numbers
-        String phoneRegex = "^[0-9]{10}$";
-        Pattern pattern = Pattern.compile(phoneRegex);
-        return pattern.matcher(phoneNumber).matches();
+        // Regular expression for a phone number starting with 0 and having 10 digits
+        String regex = "^0\\d{9}$";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(phoneNumber);
+        return matcher.matches();
     }
+    // check if password is valid
+    public static boolean isValidPassword(String password) {
+        // Define a regex pattern for a valid password format
+        //String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
+        Pattern pattern = Pattern.compile(regex);
+        return pattern.matcher(password).matches();
+    }
+    //Password hashing using BCrypt
+    private static final String FIXED_SALT = "$2a$10$abcdefghijklmnopqrstuu";
+
+    public static String hashPassword(String password) {
+        return BCrypt.hashpw(password, FIXED_SALT);
+    }
+
+    public static boolean checkPassword(String password, String hashedPassword) {
+        return BCrypt.checkpw(password, hashedPassword);
+    }
+        //Generate a random salt
+
 }

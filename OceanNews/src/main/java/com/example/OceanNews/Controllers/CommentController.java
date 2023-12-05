@@ -25,9 +25,19 @@ public class CommentController {
         return commentService.getAll();
     }
     //get comment by post id mapping request
-    @GetMapping("/comment/{id}")
+    @GetMapping("/comment/post/{id}")
     public Iterable<Comment> getByPostId(@PathVariable Long id){
         return commentService.getByPostId(id);
+    }
+    //update comment mapping request
+    @PatchMapping("/comment/update/{id}")
+    public ResponseEntity<String> update(@PathVariable Long id){
+        commentService.update(id);
+        return ResponseEntity.ok("Comment id: "+id+" updated");
+    }
+    @GetMapping("/comment/status/{id}")
+    public Iterable<Comment> status(@PathVariable Long id){
+        return commentService.status(id);
     }
     //*************************************//
     //....end of comment Mapping Request...

@@ -1,39 +1,37 @@
 package com.example.OceanNews.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
 
-@Builder
-@AllArgsConstructor
 @Setter
 @Getter
-@NoArgsConstructor
 @Entity
 public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long userID;
+    private Long id;
     private String username;
-    @JsonIgnore
+    //@JsonIgnore
     private String password;
     private String email;
-    private String role;
-    private String status;
+    private Long status=2L;
     private String avatar;
     private String fullname;
     private String address;
     private String phone;
     private String gender;
+    @Enumerated(EnumType.STRING)
+    private Payment_Mode paymentMode;
+    private String payment_details;
     private String dob;
-    private String created_at;
-
+    private LocalDate created_at=LocalDate.now();
     @Enumerated(EnumType.STRING)
     private Role roles;
     @Override
@@ -41,11 +39,6 @@ public class User implements UserDetails {
         return List.of(
                 new SimpleGrantedAuthority(roles.name())
         );
-    }
-
-    @Override
-    public String getPassword() {
-        return null;
     }
 
     @Override

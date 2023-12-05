@@ -63,4 +63,12 @@ public class AnnouncementController {
         }
         return ResponseEntity.badRequest().body("Announcement with id "+id+" does not exist");
     }
+    // edit announcement
+    @PatchMapping("/announcement/edit/{id}")
+    public ResponseEntity edit(@PathVariable Long id,@RequestBody Announcement announcement) throws Exception {
+        if (service.getById(id)!=null){
+            return ResponseEntity.ok(service.edit(id,announcement));
+        }
+        return ResponseEntity.badRequest().body("Announcement with id "+id+" does not exist");
+    }
 }

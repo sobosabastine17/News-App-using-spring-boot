@@ -10,7 +10,7 @@ import java.util.List;
 public interface CommentService {
     Comment add(Comment comment);
     Iterable<Comment> getAll();
-    List<Comment> status(Long status);
+    List<Comment> status(Long status)throws ELException;
     String update(Long id);
     List<Comment> getByPostId(Long id)throws ELException;
 }

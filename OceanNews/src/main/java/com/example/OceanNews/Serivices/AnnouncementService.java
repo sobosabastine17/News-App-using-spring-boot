@@ -1,7 +1,6 @@
 package com.example.OceanNews.Serivices;
 
 import com.example.OceanNews.Model.Announcement;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,5 +16,5 @@ public interface AnnouncementService {
      Announcement update(Long id,Announcement announcement);
      List<Announcement> getAllByStatus(Long status);
      String restore(Long id);
-     ResponseEntity<String> findAnnouncementById(Long id);
+     Announcement edit(Long id,Announcement announcement)throws Exception;
 }
