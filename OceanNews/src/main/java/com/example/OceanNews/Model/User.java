@@ -7,11 +7,16 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-@Setter
 @Getter
+@Setter
+@ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 public class User implements UserDetails {
     @Id
@@ -23,7 +28,8 @@ public class User implements UserDetails {
     private String email;
     private Long status=2L;
     private String avatar;
-    private String fullname;
+    private String firstName;
+    private String lastName;
     private String address;
     private String phone;
     private String gender;
@@ -34,11 +40,25 @@ public class User implements UserDetails {
     private LocalDate created_at=LocalDate.now();
     @Enumerated(EnumType.STRING)
     private Role roles;
+
+
+    //Token for email verification
+    private boolean verified;
+    private String verificationToken;
+    private LocalDateTime tokenExpiry;
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(
                 new SimpleGrantedAuthority(roles.name())
         );
+    }
+    @Override
+    public String getPassword() {
+        return password;
+    }
+    @Override
+    public String getUsername() {
+        return email;
     }
 
     @Override

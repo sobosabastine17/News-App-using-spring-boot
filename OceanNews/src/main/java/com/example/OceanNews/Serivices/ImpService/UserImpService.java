@@ -1,31 +1,44 @@
 package com.example.OceanNews.Serivices.ImpService;
 
+import com.example.OceanNews.Authentication.Auth.RegistrationRequest;
+import com.example.OceanNews.Authentication.Config.JwtService;
+import com.example.OceanNews.DTO.Auth.AuthenticationRequest;
+import com.example.OceanNews.DTO.Auth.AuthenticationResponse;
 import com.example.OceanNews.Exception.ELException;
+import com.example.OceanNews.Model.Payment_Mode;
 import com.example.OceanNews.Model.Role;
 import com.example.OceanNews.Model.User;
 import com.example.OceanNews.Procedure.Utilities;
 import com.example.OceanNews.Repo.UserRepo;
 import com.example.OceanNews.Serivices.UserService;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.Builder;
+import lombok.RequiredArgsConstructor;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@Builder
 public class UserImpService implements UserService {
 
-    @Autowired
-    UserRepo userRepo;
-//    @Autowired
-//     BCryptPasswordEncoder passwordEncoder=new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder;
+
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
+    private final UserRepo userRepo;
     @Override
     public User saveUser(User user) throws ELException{
 
 try {
     try {
         //check if email is valid
-        if (!Utilities.isValidEmail(user.getEmail())) {
+        if (Utilities.isValidEmail(user.getEmail())) {
             throw new ELException("Email is not valid");
         }
         //check if email is existed
@@ -41,7 +54,7 @@ try {
             throw new ELException("Password is empty");
         }
         //checking if phone number is valid
-        if (!Utilities.isValidPhoneNumber(user.getPhone())) {
+        if (Utilities.isValidPhoneNumber(user.getPhone())) {
             throw new ELException("Phone number is not valid");
         }
         //checking if password is valid
@@ -99,7 +112,7 @@ try {
     }
 
     @Override
-    public Boolean userLogin(String username,String password) throws ELException {
+    public AuthenticationResponse userLogin(String username, String password, AuthenticationRequest request) throws ELException {
         if (username==null || username.isEmpty()){
             throw new ELException("Username cannot be empty");
         }else {
@@ -110,8 +123,16 @@ try {
                         String hashedPassword= Utilities.hashPassword(password);
                         // Passwords match, authentication successful
                         if (userRepo.findByPassword(hashedPassword)!=null){
+                            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                                    request.getEmail(),
+                                    request.getPassword()
+                            ));
+                            var user = userRepo.findByEmail(request.getEmail());
+                            return AuthenticationResponse.builder()
+                                    .token(jwtService.generateToken(user))
+                                    .build();
                             // Passwords match, authentication successful
-                            return true;
+//                            return true;
                         }else {
                             throw new ELException("Username or Password is not correct");
                         }
@@ -133,22 +154,54 @@ try {
 
     @Transactional
     @Override
-    public void update(Long id,User user) {
+    public void update(Long id,User user) throws ELException {
         User user1 = userRepo.findById(id).orElse(null);
-        if (user1!=null){
-            user1.setAddress(user.getAddress());
+        //checking if the fields are empty
+       if (user.getFirstName().isEmpty() ||
+                user.getLastName().isEmpty()||
+               user.getEmail().isEmpty()||
+               user.getPhone().isEmpty() ||
+               user.getAddress().isEmpty()||
+               user.getGender().isEmpty()||
+               user.getPaymentMode().toString().isEmpty()||
+               user.getPayment_details().isEmpty()||
+               user.getRoles().toString().isEmpty()){
+            throw new ELException("All fields are required");
+       }
+//          //checking if user is existed
+        if (userRepo.findById(id).isEmpty()){
+            throw new ELException("User not found");
+        }
+            // checking if email is valid or not valid email format
+            if (Utilities.isValidEmail(user.getEmail())) {
+                throw new ELException("Email is not valid");
+            }
+            // checking if email is existed
+            if (userRepo.existsByEmail(user.getEmail())) {
+                throw new ELException("Email is existed");
+            }
+            // checking if username is existed
+            if (userRepo.existsByUsername(user.getUsername())) {
+                throw new ELException("Username is existed");
+            }
+            // checking if phone number is valid
+            if (Utilities.isValidPhoneNumber(user.getPhone())) {
+                throw new ELException("Phone number is not valid");
+            }
+        assert user1 != null;
+        user1.setAddress(user.getAddress());
             user1.setAvatar(user.getAvatar());
             user1.setDob(user.getDob());
             user1.setEmail(user.getEmail());
-            user1.setFullname(user.getFullname());
+            user1.setFirstName(user.getFirstName());
+            user1.setLastName(user.getLastName());
             user1.setGender(user.getGender());
             user1.setPaymentMode(user.getPaymentMode());
             user1.setPayment_details(user.getPayment_details());
             user1.setPhone(user.getPhone());
             user1.setRoles(user.getRoles());
             userRepo.save(user1);
-        }
-        throw new ELException("User not found");
+//        }
     }
 
     @Override
@@ -164,22 +217,34 @@ try {
     @Override
     public void changeStatus(Long id, Long status) throws ELException {
         User user = userRepo.findById(id).orElse(null);
-        if (user!=null){
+        assert user != null;
+        //checking if the fields are empty
+        if (user.getStatus().toString().isEmpty()){
+            throw new ELException("Status is required");
+        }
+        //checking if user is existed
+        if (userRepo.findById(id).isEmpty()){
+            throw new ELException("User not found");
+        }
             user.setStatus(status);
             userRepo.save(user);
         }
-        throw new ELException("User not found");
-    }
 
     @Override
     public void changeRole(Long id, Role role) throws ELException {
         User user = userRepo.findById(id).orElse(null);
-        if (user!=null){
+        assert user != null;
+        //checking if the fields are empty
+        if (user.getRoles().toString().isEmpty()){
+            throw new ELException("Role is required");
+        }
+        //checking if user is existed
+        if (userRepo.findById(id).isEmpty()){
+            throw new ELException("User not found");
+        }
             user.setRoles(role);
             userRepo.save(user);
         }
-        throw new ELException("User not found");
-    }
 
     @Override
     public List<User> findByRoles(Role roles) throws ELException {
@@ -192,12 +257,120 @@ try {
     }
 
     @Override
+    public void updateProfile(Long id, User user) throws ELException {
+        User user1 = userRepo.findById(id).orElse(null);
+        if (userRepo.findUserById(id).isPresent()){
+            //checking if the fields are empty
+            if (user.getFirstName().isEmpty() ||
+                    user.getLastName().isEmpty()||
+                    user.getEmail().isEmpty()||
+                    user.getPhone().isEmpty()){
+                throw new ELException("All fields are required");
+            }
+            // checking if email is valid or not valid email format
+            if (Utilities.isValidEmail(user.getEmail())) {
+                throw new ELException("Email is not valid");
+            }
+            // checking if email is existed
+            if (userRepo.existsByEmail(user.getEmail())) {
+                throw new ELException("Email is existed");
+            }
+            //checking if phone number is valid
+            if (Utilities.isValidPhoneNumber(user.getPhone())) {
+                throw new ELException("Phone number is not valid");
+            }
+            assert user1 != null;
+            user1.setAvatar(user.getAvatar());
+            user1.setEmail(user.getEmail());
+            user1.setPhone(user.getPhone());
+            userRepo.save(user1);
+        }
+        throw new ELException("User not found");
+    }
+
+    @Override
+    public void updateAvatar(Long id, String avatar) throws ELException {
+        User user = userRepo.findById(id).orElse(null);
+        //checking if the fields are empty
+        assert user != null;
+        if (user.getAvatar().isEmpty()){
+            throw new ELException("Avatar is required");
+        }
+        //checking if user is existed
+        if (userRepo.findById(id).isEmpty()){
+            throw new ELException("User not found");
+        }
+        user.setAvatar(avatar);
+            userRepo.save(user);
+
+        throw new ELException("User not found");
+    }
+
+    @Override
+    public void updatePayment(Long id, Payment_Mode paymentMode, String paymentDetails) throws ELException {
+        User user = userRepo.findById(id).orElse(null);
+        assert user != null;
+        //checking if the fields are empty
+        if (user.getPayment_details().isEmpty() ||
+                user.getPaymentMode().toString().isEmpty()){
+            throw new ELException("All fields are required");
+        }
+        //checking if user is existed
+        if (userRepo.findById(id).isEmpty()){
+            throw new ELException("User not found");
+        }
+            user.setPaymentMode(paymentMode);
+            user.setPayment_details(paymentDetails);
+            userRepo.save(user);
+        }
+
+    @Override
+    public void sendVerificationEmail(User user, String Link) throws ELException {
+        SimpleMailMessage msg = new SimpleMailMessage();
+        // check if email is valid
+        if (Utilities.isValidEmail(user.getEmail())) {
+            throw new ELException("Email is not valid");
+        }
+        msg.setTo(user.getEmail());
+        msg.setSubject("Email Verification");
+         Link = "localhost:8080/api/newsApp/v1/user/verify?token=" + Utilities.generateToken(); // Create verification link
+        msg.setText("Click the link to verify your email: " + Link);
+//        javaMailSender.send(msg);
+    }
+
+    @Override
+    public AuthenticationResponse register(RegistrationRequest request) throws ELException {
+        var user = User.builder()
+                .username(request.getUsername())
+                .password(request.getPassword())
+                .email(request.getEmail())
+                .status(request.getStatus())
+                .avatar(request.getAvatar())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .address(request.getAddress())
+                .phone(request.getPhone())
+                .gender(request.getGender())
+                .paymentMode(Payment_Mode.BANK_ACCOUNT)
+                .payment_details(request.getPayment_details())
+                .dob(request.getDob())
+                .created_at(request.getCreated_at())
+                .roles(Role.USER)
+                .build();
+        userRepo.save(user);
+        var token = jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(token)
+                .build();
+    }
+
+    @Override
     public User findUserByUsername(String username) {
         return userRepo.findAllByUsername(username);
     }
 
     @Override
     public User findUserByPassword(String password) {
-        return userRepo.findByPassword(password);
+        return userRepo.findByPassword(Utilities.hashPassword(password));
     }
 }

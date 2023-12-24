@@ -1,9 +1,12 @@
 package com.example.OceanNews.Controllers;
 
+import com.example.OceanNews.DTO.Auth.AuthenticationRequest;
+import com.example.OceanNews.DTO.Auth.AuthenticationResponse;
 import com.example.OceanNews.Model.Role;
 import com.example.OceanNews.Model.User;
-import com.example.OceanNews.Serivices.ImpService.UserImpService;
+import com.example.OceanNews.Repo.UserRepo;
 import com.example.OceanNews.Serivices.UserService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,18 +16,17 @@ import java.util.List;
 
 
 @RestController
+@RequiredArgsConstructor
 public class UserController {
-    @Autowired
-    private UserService userService = new UserImpService();
-
-
+    private final UserService userService;
     @PostMapping("/user/login")
-    public ResponseEntity<String> loginUser(@RequestBody User user) {
-        if (userService.userLogin(user.getUsername(), user.getPassword())) {
-            return ResponseEntity.ok("Login successfully");
-        } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
-        }
+    public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody AuthenticationRequest request) {
+//        if (userService.userLogin(request.getEmail(),request.getPassword(),request)) {
+//            return ResponseEntity.ok("Login successfully");
+//        } else {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Login failed");
+//        }
+         return ResponseEntity.ok(userService.userLogin(request.getEmail(),request.getPassword(),request));
     }
     @PostMapping("/user/create")
     public User createUser(@RequestBody User user) {
@@ -43,11 +45,10 @@ public class UserController {
     }
 
     @PatchMapping("/user/update/{id}")
-    public void updateUser(
+    public void update(
             @PathVariable Long id,
-            @RequestParam(required=false) String username,
-            @RequestParam(required=false) String email){
-        userService.updateUser(id,username,email);
+            @RequestBody User user ) {
+        userService.update(id,user);
     }
     @DeleteMapping("/user/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
