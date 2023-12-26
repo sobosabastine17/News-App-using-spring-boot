@@ -1,4 +1,4 @@
-package com.example.OceanNews.Authentication.Auth;
+package com.example.OceanNews.DTO.Auth;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

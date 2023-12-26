@@ -23,7 +23,9 @@ public class SecurityConfiguration {
         http
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers("/api/springSecurity/v1/auth/**")
+                        .requestMatchers("/api/springSecurity/v1/auth/**",
+                                "/api/newsApp/v1/comment/save",
+                                "/api/newsApp/v1/user/create")
                         .permitAll()
                         .anyRequest().authenticated()
                 )

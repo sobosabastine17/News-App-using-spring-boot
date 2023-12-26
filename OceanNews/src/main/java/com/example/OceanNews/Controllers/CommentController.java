@@ -8,34 +8,35 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/newsApp/v1/comment")
 public class CommentController {
     @Autowired
     CommentService commentService=new CommentImpService();
 
     //save comment mapping request
-    @PostMapping("/comment/save")
+    @PostMapping("/save")
     public ResponseEntity<String> save(@RequestBody Comment comment)
     {
         commentService.add(comment);
         return ResponseEntity.ok("Comment sent");
     }
     //get all comment mapping request
-    @GetMapping("/comment/allComment")
+    @GetMapping("/allComment")
     public Iterable<Comment> getComment(){
         return commentService.getAll();
     }
     //get comment by post id mapping request
-    @GetMapping("/comment/post/{id}")
+    @GetMapping("/post/{id}")
     public Iterable<Comment> getByPostId(@PathVariable Long id){
         return commentService.getByPostId(id);
     }
     //update comment mapping request
-    @PatchMapping("/comment/update/{id}")
+    @PatchMapping("/update/{id}")
     public ResponseEntity<String> update(@PathVariable Long id){
         commentService.update(id);
         return ResponseEntity.ok("Comment id: "+id+" updated");
     }
-    @GetMapping("/comment/status/{id}")
+    @GetMapping("/status/{id}")
     public Iterable<Comment> status(@PathVariable Long id){
         return commentService.status(id);
     }

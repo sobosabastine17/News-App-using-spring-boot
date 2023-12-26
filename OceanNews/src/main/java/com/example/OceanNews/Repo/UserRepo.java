@@ -26,12 +26,16 @@ List <User> findByRoles(Role roles);
     User findAllByUsername(String username);
 
     @Query("select u from User u where u.password = ?1")
-    User findByPassword(String password);
+    Optional<User> findByPassword(String password);
 
     @Query("select u from User u where u.id = ?1")
     Optional<User> findUserById(Long id);
     @Query("select u from User u where u.verificationToken = ?1")
     User findByVerificationToken(String verificationToken);
+
+    // This query verifies the password for the given email
+    @Query("SELECT u FROM User u WHERE u.email = :email AND u.password = :password")
+    Optional<Object> findEmailAndPassword(String email, String password);
     // this is for the authentication token
    // Optional<User> findByEmail(String email);
 }

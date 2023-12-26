@@ -26,7 +26,7 @@ public class User implements UserDetails {
     //@JsonIgnore
     private String password;
     private String email;
-    private Long status=2L;
+    private final Long status=2L;
     private String avatar;
     private String firstName;
     private String lastName;

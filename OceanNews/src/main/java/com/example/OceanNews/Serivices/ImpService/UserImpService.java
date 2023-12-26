@@ -1,9 +1,9 @@
 package com.example.OceanNews.Serivices.ImpService;
 
-import com.example.OceanNews.Authentication.Auth.RegistrationRequest;
 import com.example.OceanNews.Authentication.Config.JwtService;
 import com.example.OceanNews.DTO.Auth.AuthenticationRequest;
 import com.example.OceanNews.DTO.Auth.AuthenticationResponse;
+import com.example.OceanNews.DTO.Auth.RegistrationRequest;
 import com.example.OceanNews.Exception.ELException;
 import com.example.OceanNews.Model.Payment_Mode;
 import com.example.OceanNews.Model.Role;
@@ -21,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,38 +34,61 @@ public class UserImpService implements UserService {
     private final AuthenticationManager authenticationManager;
     private final UserRepo userRepo;
     @Override
-    public User saveUser(User user) throws ELException{
+    public AuthenticationResponse saveUser(RegistrationRequest request) throws ELException{
 
 try {
     try {
         //check if email is valid
-        if (Utilities.isValidEmail(user.getEmail())) {
+        if (Utilities.isValidEmail(request.getEmail())) {
             throw new ELException("Email is not valid");
         }
         //check if email is existed
-        if (userRepo.existsByEmail(user.getEmail())) {
+        if (userRepo.existsByEmail(request.getEmail())) {
             throw new ELException("Email is existed");
         }
         //check if username is existed
-        if (userRepo.existsByUsername(user.getUsername())) {
+        if (userRepo.existsByUsername(request.getUsername())) {
             throw new ELException("Username is existed");
         }
         //check if password is empty
-        if (user.getPassword().isEmpty()) {
+        if (request.getPassword().isEmpty()) {
             throw new ELException("Password is empty");
         }
         //checking if phone number is valid
-        if (Utilities.isValidPhoneNumber(user.getPhone())) {
+        if (Utilities.isValidPhoneNumber(request.getPhone())) {
             throw new ELException("Phone number is not valid");
         }
         //checking if password is valid
-        if (!Utilities.isValidPassword(user.getPassword())) {
+        if (!Utilities.isValidPassword(request.getPassword())) {
             throw new ELException("Password is not valid");
         }
-        var ps = user.getPassword();
+        var ps = request.getPassword();
         String hashedPassword= Utilities.hashPassword(ps);
-        user.setPassword(hashedPassword);
-        return userRepo.save(user);
+        request.setPassword(hashedPassword);
+        //return userRepo.save(user);
+        var user = User.builder()
+                .username(request.getUsername())
+                .password(request.getPassword())
+                .email(request.getEmail())
+                //.status(request.getStatus())
+                .avatar(request.getAvatar())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .address(request.getAddress())
+                .phone(request.getPhone())
+                .gender(request.getGender())
+                .paymentMode(Payment_Mode.BANK_ACCOUNT)
+                .payment_details(request.getPayment_details())
+                .dob(request.getDob())
+                .created_at(request.getCreated_at())
+                .roles(Role.USER)
+                .build();
+        userRepo.save(user);
+        var token = jwtService.generateToken(user);
+        return AuthenticationResponse.builder()
+                .token(token)
+                .build();
+
     }catch (Exception e){
         throw new ELException(e.toString());
     }
@@ -112,27 +136,26 @@ try {
     }
 
     @Override
-    public AuthenticationResponse userLogin(String username, String password, AuthenticationRequest request) throws ELException {
-        if (username==null || username.isEmpty()){
+    public AuthenticationResponse userLogin(AuthenticationRequest request) throws ELException {
+        if (request.getEmail()==null || request.getEmail().isEmpty()){
             throw new ELException("Username cannot be empty");
         }else {
-                if (password==null || password.isEmpty()){
+                if (request.getPassword()==null || request.getPassword().isEmpty()){
                     throw new ELException("Password is empty");
                 }else{
-                    if (existedByEmail(username)||existsByUsername(username)){
-                        String hashedPassword= Utilities.hashPassword(password);
+                    if (existedByEmail(request.getEmail())||existsByUsername(request.getEmail())){
+                        String hashedPassword= Utilities.hashPassword(request.getPassword());
+
                         // Passwords match, authentication successful
-                        if (userRepo.findByPassword(hashedPassword)!=null){
+                        if (userRepo.findEmailAndPassword(request.getEmail(),hashedPassword).isPresent()){
                             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                                     request.getEmail(),
-                                    request.getPassword()
+                                    Utilities.hashPassword(request.getPassword())
                             ));
                             var user = userRepo.findByEmail(request.getEmail());
                             return AuthenticationResponse.builder()
                                     .token(jwtService.generateToken(user))
                                     .build();
-                            // Passwords match, authentication successful
-//                            return true;
                         }else {
                             throw new ELException("Username or Password is not correct");
                         }
@@ -226,7 +249,7 @@ try {
         if (userRepo.findById(id).isEmpty()){
             throw new ELException("User not found");
         }
-            user.setStatus(status);
+           // user.setStatus(status);
             userRepo.save(user);
         }
 
@@ -344,7 +367,7 @@ try {
                 .username(request.getUsername())
                 .password(request.getPassword())
                 .email(request.getEmail())
-                .status(request.getStatus())
+                //.status(request.getStatus())
                 .avatar(request.getAvatar())
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -370,7 +393,7 @@ try {
     }
 
     @Override
-    public User findUserByPassword(String password) {
+    public Optional<User> findUserByPassword(String password) {
         return userRepo.findByPassword(Utilities.hashPassword(password));
     }
 }

@@ -1,8 +1,8 @@
 package com.example.OceanNews.Serivices;
 
-import com.example.OceanNews.Authentication.Auth.RegistrationRequest;
 import com.example.OceanNews.DTO.Auth.AuthenticationRequest;
 import com.example.OceanNews.DTO.Auth.AuthenticationResponse;
+import com.example.OceanNews.DTO.Auth.RegistrationRequest;
 import com.example.OceanNews.Exception.ELException;
 import com.example.OceanNews.Model.Payment_Mode;
 import com.example.OceanNews.Model.Role;
@@ -10,16 +10,17 @@ import com.example.OceanNews.Model.User;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public interface UserService {
     List<User> findByUsername(String username);
-    AuthenticationResponse userLogin(String username, String password, AuthenticationRequest request) throws ELException;
+    AuthenticationResponse userLogin(AuthenticationRequest request) throws ELException;
     Boolean existsByUsername(String user);
     Boolean existedByPassword(String pass);
     User findUserByUsername(String username);
-    public User findUserByPassword(String password);
-    User saveUser(User user) throws ELException;
+    public Optional<User> findUserByPassword(String password);
+    AuthenticationResponse saveUser(RegistrationRequest request) throws ELException;
     void deleteUser(Long id) throws ELException;
     User findUserById(Long id) throws ELException;
     List<User> findAllUsers() throws ELException;
