@@ -14,36 +14,36 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/newsApp/v1/user")
+@RequestMapping("/api/newsApp/v1")
 public class UserController {
     private final UserService userService;
-    @PostMapping("/login")
+    @PostMapping("/user/login")
     public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody AuthenticationRequest request) {
          return ResponseEntity.ok(userService.userLogin(request));
     }
-    @PostMapping("/create")
+    @PostMapping("/user/create")
     public ResponseEntity<AuthenticationResponse> createUser(@RequestBody RegistrationRequest user) {
         return ResponseEntity.ok(userService.saveUser(user));
     }
 
-    @GetMapping("/all")
+    @GetMapping("/user/all")
     public List<User> getAllUsers() {
         return userService.findAllUsers();
     }
 
-    @GetMapping("/role/{role}")
+    @GetMapping("/user/role/{role}")
     public Iterable<User> getUserByRole(@PathVariable Role role) {
      // (ResponseEntity) userService.findByRoles(role);
         return userService.findByRoles(role);
     }
 
-    @PatchMapping("/update/{id}")
+    @PatchMapping("/user/update/{id}")
     public void update(
             @PathVariable Long id,
             @RequestBody User user ) {
         userService.update(id,user);
     }
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/user/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         User existingUser = userService.findUserById(id);
         if (existingUser!=null) {
@@ -55,7 +55,7 @@ public class UserController {
     }
 
     //reset password
-    @PatchMapping("/resetPassword/{id}")
+    @PatchMapping("/user/resetPassword/{id}")
     public void resetPassword(@PathVariable Long id,@RequestBody User user){
         userService.resetPassword(id,user.getEmail(),user.getPassword());
     }

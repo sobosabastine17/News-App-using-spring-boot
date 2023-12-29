@@ -1,5 +1,6 @@
 package com.example.OceanNews.DTO.Auth;
 
+import com.example.OceanNews.Model.Role;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,5 +12,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AuthenticationResponse {
     private String token;
-    //private String username;
+    private String username;
+    private Role role;
 }

@@ -150,7 +150,9 @@ try {
                         if (userRepo.findEmailAndPassword(request.getEmail(),hashedPassword).isPresent()){
                             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                                     request.getEmail(),
-                                    Utilities.hashPassword(request.getPassword())
+                                   // Utilities.hashPassword(request.getPassword())
+                                  //  hashedPassword
+                                    request.getPassword()
                             ));
                             var user = userRepo.findByEmail(request.getEmail());
                             return AuthenticationResponse.builder()
@@ -384,6 +386,8 @@ try {
         var token = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .token(token)
+                .username(request.getEmail())
+                .role(request.getRole())
                 .build();
     }
 
