@@ -25,7 +25,14 @@
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/3.2.0/c118a8d5f464983d7298b0f849cb9278f08d1f1e/spring-boot-configuration-processor-3.2.0.jar" />
           <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
         </processorPath>
-        <module name="OceanNews.OceanNews.main~6" />
+      </profile>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot-configuration-processor/3.2.0/c118a8d5f464983d7298b0f849cb9278f08d1f1e/spring-boot-configuration-processor-3.2.0.jar" />
+        </processorPath>
+        <module name="OceanNews.OceanNews.main~5" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -34,13 +41,13 @@
       <module name="OceanNews.OceanNews.main~2" target="17" />
       <module name="OceanNews.OceanNews.main~3" target="17" />
       <module name="OceanNews.OceanNews.main~4" target="17" />
-      <module name="OceanNews.OceanNews.main~5" target="17" />
+      <module name="OceanNews.OceanNews.main~6" target="17" />
       <module name="OceanNews.OceanNews.test" target="17" />
       <module name="OceanNews.OceanNews.test~1" target="21" />
       <module name="OceanNews.OceanNews.test~2" target="17" />
       <module name="OceanNews.OceanNews.test~3" target="17" />
       <module name="OceanNews.OceanNews.test~4" target="17" />
-      <module name="OceanNews.OceanNews.test~5" target="17" />
+      <module name="OceanNews.OceanNews.test~6" target="17" />
     </bytecodeTargetLevel>
   </component>
 </project>

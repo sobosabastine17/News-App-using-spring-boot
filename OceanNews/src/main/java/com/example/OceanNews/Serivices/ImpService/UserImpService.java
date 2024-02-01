@@ -149,10 +149,7 @@ public class UserImpService implements UserService {
                                          //  hashedPassword
                                          request.getPassword()
                                  ));
-//                            var user = userRepo.findByEmail(request.getEmail());
-//                            return AuthenticationResponse.builder()
-//                                    .token(jwtService.generateToken(user))
-//                                    .build();
+//
                                  var user = userRepo.findByEmail(request.getEmail());
                                  return AuthenticationResponse.builder()
                                          .token(jwtService.generateToken(user))
