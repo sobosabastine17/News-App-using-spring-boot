@@ -28,7 +28,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.projectlombok:lombok:1.18.28'
-	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	runtimeOnly 'com.h2database:h2'
 	runtimeOnly 'com.mysql:mysql-connector-j'
@@ -45,12 +44,14 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 
 	//JSON web token
-	implementation 'io.jsonwebtoken:jjwt:0.12.3' // You can check for the latest version on Maven Central
+	implementation 'io.jsonwebtoken:jjwt:0.12.3'
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'
 	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
 	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
 
 	implementation 'org.mindrot:jbcrypt:0.4'
+
+	implementation 'org.springframework:spring-websocket:6.0.10'
 
 }
 

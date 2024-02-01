@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/newsApp/v1")
 public class PostController {
     @Autowired
     PostService addPostService=new PostImpService();
@@ -29,7 +30,7 @@ public class PostController {
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post with ID:"+id+" can not be found");
     }
-    @GetMapping("/post/get_post")
+    @GetMapping("post/get_post")
     public Iterable<Post> getAll(){
         return addPostService.getAll();
     }

@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
+@RequestMapping("/api/newsApp/v1")
 public class AnnouncementController {
     @Autowired
     AnnouncementImpService service;

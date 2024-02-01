@@ -3,6 +3,7 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 @RestController
+@RequestMapping("/api/newsApp/v1")
 @ApiOperation(value = "Ocean News", tags = {"Ocean News"})
 public class ApiController {
     @Value("${app.name}")
@@ -15,7 +16,7 @@ public class ApiController {
         return details;
     }
 //Testing the api
-    @GetMapping("app/testing")
+    @GetMapping("testing")
     public String testingApp(){
         return "Welcome to me";
     }

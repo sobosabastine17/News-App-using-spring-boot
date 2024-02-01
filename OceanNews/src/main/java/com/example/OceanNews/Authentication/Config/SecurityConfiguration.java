@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.configurers.CsrfConfig
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -23,13 +22,16 @@ public class SecurityConfiguration {
         http
                 .csrf(CsrfConfigurer::disable)
                 .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
-                        .requestMatchers( "/api/newsApp/v1",
+                        .requestMatchers(
+                                "/api/newsApp/v1/**",
                                 "/api/newsApp/v1/comment/save",
                                 "/api/newsApp/v1/user/create",
-                                "/api/newsApp/v1/user/login"
+                                "/api/newsApp/v1/user/login",
+                                "/api/newsApp/v1/post/get_post"
                         )
                         .permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest()
+                        .authenticated()
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)

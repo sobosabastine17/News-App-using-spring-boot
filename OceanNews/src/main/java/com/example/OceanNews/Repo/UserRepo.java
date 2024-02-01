@@ -26,7 +26,11 @@ List <User> findByRoles(Role roles);
     User findAllByUsername(String username);
 
     @Query("select u from User u where u.password = ?1")
-    Optional<User> findByPassword(String password);
+    //boolean findByPassword(String password);
+    Optional<User> findByPassword(String hashedPassword);
+
+    @Query("select u from User u where u.password = ?1")
+        User findByPassword2(String password);
 
     @Query("select u from User u where u.id = ?1")
     Optional<User> findUserById(Long id);

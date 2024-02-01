@@ -12,38 +12,38 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-@RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/newsApp/v1")
+@RestController
+@RequestMapping("/api/newsApp/v1/user")
 public class UserController {
     private final UserService userService;
-    @PostMapping("/user/login")
+    @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody AuthenticationRequest request) {
          return ResponseEntity.ok(userService.userLogin(request));
     }
-    @PostMapping("/user/create")
+    @PostMapping("/create")
     public ResponseEntity<AuthenticationResponse> createUser(@RequestBody RegistrationRequest user) {
         return ResponseEntity.ok(userService.saveUser(user));
     }
 
-    @GetMapping("/user/all")
+    @GetMapping("/all")
     public List<User> getAllUsers() {
         return userService.findAllUsers();
     }
 
-    @GetMapping("/user/role/{role}")
+    @GetMapping("/role/{role}")
     public Iterable<User> getUserByRole(@PathVariable Role role) {
      // (ResponseEntity) userService.findByRoles(role);
         return userService.findByRoles(role);
     }
 
-    @PatchMapping("/user/update/{id}")
+    @PatchMapping("/update/{id}")
     public void update(
             @PathVariable Long id,
             @RequestBody User user ) {
         userService.update(id,user);
     }
-    @DeleteMapping("/user/delete/{id}")
+    @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deleteUser(@PathVariable Long id) {
         User existingUser = userService.findUserById(id);
         if (existingUser!=null) {

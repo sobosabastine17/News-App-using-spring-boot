@@ -16,6 +16,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class ApplicationConfig {
     private final UserRepo repository;
+
+//    public ApplicationConfig(UserRepo repository) {
+//        this.repository = repository;
+//    }
+
     @Bean
     public UserDetailsService userDetailsService() {
         return repository::findByEmail;

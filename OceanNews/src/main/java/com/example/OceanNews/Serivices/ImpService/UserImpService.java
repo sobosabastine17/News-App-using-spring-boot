@@ -27,16 +27,12 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Builder
 public class UserImpService implements UserService {
-
     private final PasswordEncoder passwordEncoder;
-
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
     private final UserRepo userRepo;
     @Override
     public AuthenticationResponse saveUser(RegistrationRequest request) throws ELException{
-
-try {
     try {
         //check if email is valid
         if (Utilities.isValidEmail(request.getEmail())) {
@@ -92,10 +88,6 @@ try {
     }catch (Exception e){
         throw new ELException(e.toString());
     }
-
-}catch (Exception e){
-    throw new ELException(e.toString());
-}
     }
 
     @Override
@@ -147,17 +139,28 @@ try {
                         String hashedPassword= Utilities.hashPassword(request.getPassword());
 
                         // Passwords match, authentication successful
-                        if (userRepo.findEmailAndPassword(request.getEmail(),hashedPassword).isPresent()){
-                            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                                    request.getEmail(),
-                                   // Utilities.hashPassword(request.getPassword())
-                                  //  hashedPassword
-                                    request.getPassword()
-                            ));
-                            var user = userRepo.findByEmail(request.getEmail());
-                            return AuthenticationResponse.builder()
-                                    .token(jwtService.generateToken(user))
-                                    .build();
+                        User userEmail = userRepo.findByEmail(request.getEmail());
+                        if (userEmail != null) {
+                            User userPassword=userRepo.findByPassword2(hashedPassword);
+                             if (userRepo.existsByPassword(hashedPassword)){
+                                 authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
+                                         request.getEmail(),
+                                         // Utilities.hashPassword(request.getPassword())
+                                         //  hashedPassword
+                                         request.getPassword()
+                                 ));
+//                            var user = userRepo.findByEmail(request.getEmail());
+//                            return AuthenticationResponse.builder()
+//                                    .token(jwtService.generateToken(user))
+//                                    .build();
+                                 var user = userRepo.findByEmail(request.getEmail());
+                                 return AuthenticationResponse.builder()
+                                         .token(jwtService.generateToken(user))
+                                         .build();
+                             }else {
+                                 throw new ELException("Username or Password is not correct");
+                             }
+
                         }else {
                             throw new ELException("Username or Password is not correct");
                         }
