@@ -4,6 +4,7 @@ import com.example.OceanNews.Model.Role;
 import com.example.OceanNews.Model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,6 +17,8 @@ public interface UserRepo extends JpaRepository<User,Long> {
 
     @Query("select (count(u) > 0) from User u where u.password = ?1")
     boolean existsByPassword(String password);
+    @Query("SELECT CASE WHEN COUNT(u) > 0 THEN true ELSE false END FROM User u WHERE u.password = :password")
+    boolean existsByPassword2(@Param("password") String password);
     @Query("select (count(u) > 0) from User u where u.username = ?1")
     boolean existsByUsername(String username);
 @Query("select u from User u where u.roles = ?1")

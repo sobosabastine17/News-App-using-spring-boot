@@ -6,6 +6,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class GetCategoryResponsesDTO {
-    private Long id;
-    private String categoryName,createdBy,categoryDetails;
+    private String categoryName,categoryDetails;
 }

@@ -1,6 +1,5 @@
 package com.example.OceanNews.Controllers;
 
-import com.example.OceanNews.DTO.Category.CreateCategoryDTO;
 import com.example.OceanNews.DTO.Category.UpdateCategoryDTO;
 import com.example.OceanNews.Model.Category;
 import com.example.OceanNews.Serivices.ImpService.CategoryImpService;
@@ -15,7 +14,7 @@ public class CategoryController {
     @Autowired
     private CategoryImpService categoryImpService;
     @PostMapping("category/add")
-    ResponseEntity<String> postCategory(@RequestBody CreateCategoryDTO category){
+    ResponseEntity<String> postCategory(@RequestBody Category category){
         if (categoryImpService.checkCategoryNameExist(category.getCategoryName())){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category name exist");
         }

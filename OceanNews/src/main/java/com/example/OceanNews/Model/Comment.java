@@ -1,9 +1,6 @@
 package com.example.OceanNews.Model;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,10 +10,7 @@ import java.time.LocalDate;
 @Entity
 @Setter
 @Getter
-public class Comment {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Comment extends Model{
     @Column
     private String title,content,user;
     private LocalDate date=LocalDate.now();

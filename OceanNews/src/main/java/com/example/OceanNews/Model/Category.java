@@ -2,21 +2,19 @@ package com.example.OceanNews.Model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import java.time.LocalDate;
 
 @Entity
 @Setter
 @Getter
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@NoArgsConstructor
+public class Category extends Model{
     @Column
-    private String categoryName,createdBy;
+    private String categoryName;
     @Column
     private String categoryDetails;
-    @Column
-    private LocalDate date;
+    @ManyToOne
+    private SubCategory subCategory;
+
 }

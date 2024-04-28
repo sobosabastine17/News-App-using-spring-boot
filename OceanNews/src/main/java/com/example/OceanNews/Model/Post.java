@@ -1,36 +1,28 @@
 package com.example.OceanNews.Model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.Column;
-import java.time.LocalDate;
 
 @Setter
 @Getter
 @Entity
 @ToString
-public class Post {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonIgnore
-    private Long id;
+@NoArgsConstructor
+public class Post extends Model{
     @Column
     private String title;
-    @Column
-    private Long categoryID;
-    @Column
-    private Long subCategoryID;
-    @Column
+    @ManyToOne
+    private Category category;
+    @ManyToOne
+    private SubCategory subCategory;
+    @Column(columnDefinition = "TEXT")
     private String content;
-    @Column
-    private LocalDate date=LocalDate.now();
     @Column
     private Long click=0L;
     @Column
@@ -42,7 +34,4 @@ public class Post {
     @Column
     private Long status=0L;
 
-    public Post() {
-        // Default constructor
-    }
 }

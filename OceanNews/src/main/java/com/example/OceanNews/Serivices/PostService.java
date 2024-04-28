@@ -24,4 +24,6 @@ public interface PostService {
     Post findId(Long id) throws ELException;
     String restore(Long id) throws ELException;
     Post getById(Long id) throws ELException;
+    Iterable<Post> getByCategory(Long id) throws ELException;
+    boolean categoryIdExists(Long id) throws ELException;
 }

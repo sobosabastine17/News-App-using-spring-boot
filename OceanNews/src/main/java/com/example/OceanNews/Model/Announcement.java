@@ -10,10 +10,7 @@ import java.time.LocalDate;
 @Setter
 @Entity
 @Table(name = "announcement")
-public class Announcement {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Announcement extends Model{
     private String title;
     private String content;
     private String image;

@@ -1,7 +1,9 @@
 package com.example.OceanNews.Serivices.ImpService;
 
 import com.example.OceanNews.Exception.ELException;
+import com.example.OceanNews.Model.Category;
 import com.example.OceanNews.Model.Post;
+import com.example.OceanNews.Repo.CategoryRepo;
 import com.example.OceanNews.Repo.PostRepo;
 import com.example.OceanNews.Serivices.PostService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,27 +15,44 @@ import java.util.List;
 public class PostImpService implements PostService {
     @Autowired
     PostRepo addPostRepo;
+    @Autowired
+    private CategoryRepo categoryRepo;
+
     @Override
     public Post add(Post addPost) {
-        return  addPostRepo.save(addPost);
+        // Check if addPost contains a valid Category object with a non-null ID
+        if (addPost.getCategory() == null || addPost.getCategory().getId() == null) {
+            throw new IllegalArgumentException("Category ID must be provided");
+        }
+
+        // Retrieve the Category object based on the provided ID
+        Category category = categoryRepo.findById(addPost.getCategory().getId())
+                .orElseThrow(() -> new RuntimeException("Category not found"));
+
+        // Set the retrieved Category object to the Post entity
+        addPost.setCategory(category);
+
+        // Save the Post entity with the associated Category
+        return addPostRepo.save(addPost);
     }
 
     @Override
     public Iterable<Post> getAll() {
         return addPostRepo.findAll();
     }
+
     @Override
     public void softDelete(Long id) {
-        Post post=addPostRepo.findByPostID(id);
-       assert post != null;
-            post.setStatus(6L);
-            addPostRepo.save(post);
+        Post post = addPostRepo.findByPostID(id);
+        assert post != null;
+        post.setStatus(6L);
+        addPostRepo.save(post);
     }
 
 
     @Override
     public void hardDelete(Long ID) throws ELException {
-        Post post=addPostRepo.findByPostID(ID);
+        Post post = addPostRepo.findByPostID(ID);
         assert post != null;
         addPostRepo.delete(post);
     }
@@ -57,7 +76,7 @@ public class PostImpService implements PostService {
 
     @Override
     public boolean update(Long id, Post postUpdate) {
-        Post existingPost= addPostRepo.findByPostID(id);
+        Post existingPost = addPostRepo.findByPostID(id);
         assert existingPost != null;
         // check if ID is 0,1,2,3
         if (id >= 0 && id <= 3) {
@@ -67,9 +86,10 @@ public class PostImpService implements PostService {
         }
         return false;
     }
+
     @Override
     public void edit(Long id, Post postUpdate) {
-        Post existingPost= addPostRepo.findByPostID(id);
+        Post existingPost = addPostRepo.findByPostID(id);
         assert existingPost != null;
         existingPost.setTitle(postUpdate.getTitle());
         existingPost.setContent(postUpdate.getContent());
@@ -89,7 +109,7 @@ public class PostImpService implements PostService {
 
     @Override
     public String restore(Long id) throws ELException {
-        Post post=addPostRepo.findByPostID(id);
+        Post post = addPostRepo.findByPostID(id);
         assert post != null;
         post.setStatus(3L);
         addPostRepo.save(post);
@@ -98,7 +118,17 @@ public class PostImpService implements PostService {
 
     @Override
     public Post getById(Long id) throws ELException {
-        return addPostRepo.findById(id).orElseThrow(()->new ELException("Post with ID:"+id+" could not be found"));
+        return addPostRepo.findById(id).orElseThrow(() -> new ELException("Post with ID:" + id + " could not be found"));
     }
 
+    @Override
+    public Iterable<Post> getByCategory(Long categoryId) throws ELException {
+        return addPostRepo.findByCategory_Id(categoryId);
+    }
+
+    @Override
+    public boolean categoryIdExists(Long id) throws ELException {
+        //check if category id exists
+        return categoryRepo.existsById(id);
+    }
 }

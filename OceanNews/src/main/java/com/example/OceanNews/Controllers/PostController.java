@@ -17,6 +17,10 @@ public class PostController {
     @PostMapping("/post/add")
     public ResponseEntity<String> post(@RequestBody Post addPost){
         if (addPostService.add(addPost)!=null){
+           // check if category id exists
+            if (addPost.getCategory().getId()==null){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Category ID does not exist");
+            }
             return ResponseEntity.ok("Post successfully sent\n");
         }
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Post could not be sent");
@@ -78,5 +82,13 @@ public class PostController {
             return ResponseEntity.ok("Post restored successfully");
         }
         return ResponseEntity.badRequest().body("Post with ID:"+id+" can not be found");
+    }
+    @GetMapping("/post/getByCategory/{id}")
+    public Iterable<Post> getByCategory(@PathVariable Long id){
+        //check if category id exist
+    if (!addPostService.categoryIdExists(id)){
+             ResponseEntity.badRequest().body("Category ID: "+id+" does not exist");
+        }
+        return addPostService.getByCategory(id);
     }
 }//end of PostController class

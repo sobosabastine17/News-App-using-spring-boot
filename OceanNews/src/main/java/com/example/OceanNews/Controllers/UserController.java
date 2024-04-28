@@ -1,9 +1,6 @@
 package com.example.OceanNews.Controllers;
 
-import com.example.OceanNews.DTO.Auth.AuthenticationRequest;
-import com.example.OceanNews.DTO.Auth.AuthenticationResponse;
-import com.example.OceanNews.DTO.Auth.RegistrationRequest;
-import com.example.OceanNews.Model.Role;
+import com.example.OceanNews.Model.Roles;
 import com.example.OceanNews.Model.User;
 import com.example.OceanNews.Serivices.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,13 +14,28 @@ import java.util.List;
 @RequestMapping("/api/newsApp/v1/user")
 public class UserController {
     private final UserService userService;
+//    @PostMapping("/login")
+//    public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody AuthenticationRequest request) {
+//         return ResponseEntity.ok(userService.userLogin(request));
+//    }
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> loginUser(@RequestBody AuthenticationRequest request) {
-         return ResponseEntity.ok(userService.userLogin(request));
+    public ResponseEntity<String> loginUser(@RequestBody User request) {
+        return ResponseEntity.ok(userService.userLogin(request));
     }
+//    @PostMapping("/create")
+//    public ResponseEntity<AuthenticationResponse> createUser(@RequestBody RegistrationRequest user) {
+//        return ResponseEntity.ok(userService.saveUser(user));
+//    }
     @PostMapping("/create")
-    public ResponseEntity<AuthenticationResponse> createUser(@RequestBody RegistrationRequest user) {
-        return ResponseEntity.ok(userService.saveUser(user));
+    public ResponseEntity createUser(@RequestBody User user) {
+        // checking if username or email already exists
+        if (userService.existsByUsername(user.getUsername())) {
+            return ResponseEntity.badRequest().body("Username already exists");
+        }
+        if (userService.existedByEmail(user.getEmail())) {
+            return ResponseEntity.badRequest().body("Email already exists");
+        }
+        return ResponseEntity.ok(userService.userRegistration(user));
     }
 
     @GetMapping("/all")
@@ -32,7 +44,7 @@ public class UserController {
     }
 
     @GetMapping("/role/{role}")
-    public Iterable<User> getUserByRole(@PathVariable Role role) {
+    public Iterable<User> getUserByRole(@PathVariable Roles role) {
      // (ResponseEntity) userService.findByRoles(role);
         return userService.findByRoles(role);
     }

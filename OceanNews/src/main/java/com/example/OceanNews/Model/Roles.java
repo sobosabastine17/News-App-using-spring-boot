@@ -7,11 +7,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Getter
 @Setter
+@Getter
 @NoArgsConstructor
-public class SubCategory extends Model{
-    @Column
-    private String subCategoryName,subCategoryDetails;
+public class Roles extends Model{
+    private String name;
+    @Column(columnDefinition = "TEXT")
+    private String description;
 
 }

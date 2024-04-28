@@ -27,11 +27,11 @@ public class Utilities {
 
     // check if password is valid
     public static boolean isValidPassword(String password) {
-        // Define a regex pattern for a valid password format
-        //String passwordRegex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,}$";
-        Pattern pattern = Pattern.compile(regex);
-        return pattern.matcher(password).matches();
+        //check if password should be greater than 8 characters
+        if (password.length() < 8) {
+            return false;
+        }
+        return true;
     }
 
     //Password hashing using BCrypt
