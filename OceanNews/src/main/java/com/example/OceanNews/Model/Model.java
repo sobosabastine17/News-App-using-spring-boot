@@ -21,5 +21,10 @@ public class Model implements Serializable {
     private LocalDateTime createdAt=LocalDateTime.now();
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
-
+    @Column(name = "deleted_at")
+    private LocalDateTime deletedAt;
+    @Column(name = "is_deleted")
+    private String isDeleted="No";
+    @Column(name = "status")
+    private Long status=0L;
 }
